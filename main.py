@@ -50,10 +50,7 @@ class aws_commands:
         if len(data) > 1:
             dir = f"results/{self.bucket_name}/{data[0]}"
             os.makedirs(dir, exist_ok=True)
-        
-        print(file, "=> Atual")
-        print(dir, "=> Atual")
-        print(data)
+
         if "" not in data: 
             self.s3.download_file(self.bucket_name, file, f"results/{self.bucket_name}/{file}")
     
