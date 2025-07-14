@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(
                     prog = 'main.py',
                     description = 'A simple tool that checks if an s3 aws is listable',
                     epilog = 'Github: filipedsguimaraes')
-parser.add_argument('-u', '--url', required=True, type=str, help="main.py -u s3://bucketname/")
+parser.add_argument('-u', '--url', required=True, type=str, help="main.py -u bucketname")
 parser.add_argument('-o', '--output', required=False, action='store_true', help="Use -o to set output true")
 args = parser.parse_args()
 
