@@ -69,13 +69,13 @@ class aws_commands:
         self.s3 = boto3.client('s3', config=Config(signature_version=UNSIGNED))
 
     # List all objects from an bucket
-    def list_objects(self, bucket_name, dir=""):
+    def list_objects(self, dir=""):
 
         # Unsigned Connection
-        response = self.s3.list_objects_v2(Bucket=bucket_name, Prefix=dir)
+        response = self.s3.list_objects_v2(Bucket=self.bucket_name, Prefix=dir)
 
         if not dir:
-            print(f"Listing objects from: {bucket_name}\n")
+            print(f"Listing objects from: {self.bucket_name}\n")
 
         if 'Contents' in response:
             for obj in response['Contents']:
@@ -92,7 +92,7 @@ class aws_commands:
 
                 # Enter in a directory
                 if next_dir:
-                    self.list_objects(bucket_name, dir+next_dir)
+                    self.list_objects(dir+next_dir)
 
     def download(self, file, dir=""):
         os.makedirs(f"results/{self.bucket_name}", exist_ok=True)
@@ -120,7 +120,7 @@ def colorized_extension(name):
 def main():
     print(banner())
     aws = aws_commands(args.url)
-    aws.list_objects(args.url)
+    aws.list_objects()
 
 try:
     main()
