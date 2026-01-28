@@ -2,7 +2,7 @@
 
 S3-scanner is a script to perform **file listing** in **misconfigured** S3 buckets
 
-<img width="823" height="442" alt="image" src="https://github.com/user-attachments/assets/15e44cbc-cc73-4e26-a764-d68e36046fb1" />
+<img width="894" height="451" alt="image" src="https://github.com/user-attachments/assets/15e44cbc-cc73-4e26-a764-d68e36046fb1" />
 
 # How to use
 
