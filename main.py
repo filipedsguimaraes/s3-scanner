@@ -12,6 +12,47 @@ parser.add_argument('-u', '--url', required=True, type=str, help="main.py -u buc
 parser.add_argument('-o', '--output', required=False, action='store_true', help="Use -o to set output true")
 args = parser.parse_args()
 
+# ANSI COLORS
+RESET = "\033[0m"
+COLORS = {
+    "red":     "\033[31m",
+    "green":   "\033[32m",
+    "yellow":  "\033[33m",
+    "blue":    "\033[34m",
+    "magenta": "\033[35m",
+    "cyan":    "\033[36m",
+}
+
+# ls-like color mapping for file extensions
+
+EXT_COLORS = {
+    # compress
+    ".tar.gz": COLORS["red"],
+    ".tar.xz": COLORS["red"],
+    ".tar.bz2":COLORS["red"],
+    ".zip":    COLORS["red"],
+    ".gz":     COLORS["red"],
+
+    # images
+    ".jpg": COLORS["magenta"],
+    ".jpeg": COLORS["magenta"],
+    ".png": COLORS["magenta"],
+    ".gif": COLORS["magenta"],
+    ".svg": COLORS["magenta"],
+
+    # audio / video
+    ".mp3": COLORS["cyan"],
+    ".wav": COLORS["cyan"],
+    ".mp4": COLORS["cyan"],
+    ".mkv": COLORS["cyan"],
+
+    # code ext
+    ".py": COLORS["green"],
+    ".sh": COLORS["green"],
+    ".js": COLORS["yellow"],
+    ".ts": COLORS["yellow"],
+}
+
 def banner():
     os.system("cls")
     return r"""
@@ -47,7 +88,7 @@ class aws_commands:
                     self.download(archive)
 
                 if not dir:
-                    print(f"{time} | {str(size).rjust(10)} | {archive}")
+                    print(f"{time} | {str(size).rjust(10)} | {colorized_extension(archive)}")
 
                 # Enter in a directory
                 if next_dir:
@@ -63,7 +104,19 @@ class aws_commands:
 
         if "" not in data: 
             self.s3.download_file(self.bucket_name, file, f"results/{self.bucket_name}/{file}")
-    
+
+# colorize filename by extension
+def colorized_extension(name):
+    lname = name.lower()
+
+    # prioritize compound extensions
+    for ext in sorted(EXT_COLORS, key=len, reverse=True):
+        if lname.endswith(ext):
+            return f"{EXT_COLORS[ext]}{name}{RESET}"
+
+    # no matches
+    return name
+
 def main():
     print(banner())
     aws = aws_commands(args.url)
